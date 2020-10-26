@@ -57,7 +57,7 @@ public static machine_cluster find_cluster(ArrayList<String> machines, int nb_ma
     }
     int max_cluster_available= (int) ((float)(machine_speed.keySet().size())/(1.0+backup_percent));
     if(max_cluster_available<nb_machines) {
-    	System.out.println("not enougth machine find, cluster size reduce to "+String.valueOf(max_cluster_available));
+    	System.out.println("not enougth machine find, cluster size reduce to "+ max_cluster_available);
     }
     int my_cluster_size=Math.min(max_cluster_available, nb_machines);
     for(int iter=0;iter<my_cluster_size; iter++) {

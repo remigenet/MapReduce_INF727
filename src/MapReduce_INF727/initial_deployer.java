@@ -5,12 +5,12 @@ import java.util.concurrent.Callable;
 
 public class initial_deployer implements Callable<String> {
 	//class used on each of the cluster machine in order to clean it, and fill it with the file needed
-	private String machine;
-    private String data_file;
-    private String slave_file;
-    private String directory;
-    private Integer split_number;
-    private String current_user;
+	private final String machine;
+    private final String data_file;
+    private final String slave_file;
+    private final String directory;
+    private final Integer split_number;
+    private final String current_user;
 	
     public initial_deployer(String machine, String data_file, String slave_file, String directory, Integer split_number, String cu){
         this.machine=machine;
@@ -28,10 +28,10 @@ public class initial_deployer implements Callable<String> {
 			functions.check_or_create_dir(directory, machine);
 			deploy.deploy_file(machine, data_file, directory);
 			deploy.deploy_file(machine, slave_file, "/tmp/"+current_user+"/");
-			return machine+" "+ String.valueOf(split_number);
+			return machine+" "+ split_number;
 		} catch (IOException | InterruptedException e1) {
 			e1.printStackTrace();
-			return "000 "+String.valueOf(split_number);
+			return "000 "+ split_number;
 		}
     	
     }

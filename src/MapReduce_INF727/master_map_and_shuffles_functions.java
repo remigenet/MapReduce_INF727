@@ -3,6 +3,7 @@ package MapReduce_INF727;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -121,7 +122,7 @@ public class master_map_and_shuffles_functions {
 		
 		boolean as_fail=false;
 		List<Future<String>> futures;
-		PrintWriter writer = new PrintWriter("/tmp/"+current_user+"/machines.txt", "UTF-8");
+		PrintWriter writer = new PrintWriter("/tmp/"+current_user+"/machines.txt", StandardCharsets.UTF_8);
 		ExecutorService executorService = Executors.newCachedThreadPool();
 		ArrayList<String> todo_list = new ArrayList<String>();
 		for(String split_number: my_cluster.machine_used.keySet()) {
@@ -193,7 +194,7 @@ public class master_map_and_shuffles_functions {
 				
 		boolean as_fail=false;
 		List<Future<String>> futures;
-		PrintWriter writer = new PrintWriter("/tmp/"+current_user+"/machines.txt", "UTF-8");
+		PrintWriter writer = new PrintWriter("/tmp/"+current_user+"/machines.txt", StandardCharsets.UTF_8);
 		ExecutorService executorService = Executors.newCachedThreadPool();
 		ArrayList<String> todo_list = new ArrayList<String>();
 		for(String split_number: my_cluster.machine_used.keySet()) {
@@ -264,7 +265,7 @@ public class master_map_and_shuffles_functions {
 				
 		boolean as_fail=false;
 		List<Future<String>> futures;
-		PrintWriter writer = new PrintWriter("/tmp/"+current_user+"/machines.txt", "UTF-8");
+		PrintWriter writer = new PrintWriter("/tmp/"+current_user+"/machines.txt", StandardCharsets.UTF_8);
 		ExecutorService executorService = Executors.newCachedThreadPool();
 		ArrayList<String> todo_list = new ArrayList<String>();
 		for(String split_number: my_cluster.machine_used.keySet()) {

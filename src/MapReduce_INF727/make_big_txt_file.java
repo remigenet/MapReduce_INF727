@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 public class make_big_txt_file {
@@ -36,7 +37,7 @@ public class make_big_txt_file {
         	multiplier=50;
         }
         long nb_line_objectif=init_size*multiplier;
-        BufferedWriter writer = new BufferedWriter( new PrintWriter("/tmp/data_file/bible_time"+String.valueOf(multiplier)+".txt", "UTF-8"));
+        BufferedWriter writer = new BufferedWriter( new PrintWriter("/tmp/data_file/bible_time"+ multiplier +".txt", StandardCharsets.UTF_8));
         for(long iter=0; iter<nb_line_objectif;iter++) {
         	int nombreAleatoire =  (int)(Math.random() * ((init_size - 0) + 1));
         	writer.append(my_dict.get(nombreAleatoire)+"\n");

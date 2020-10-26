@@ -14,10 +14,10 @@ import java.util.concurrent.Callable;
 public class callable_spliter implements Callable<String> {
 	//Callable class used to copy part of a file into another
 	//used here in splittin process 
-	private String bigFile;
-	private String splitFile;
-	private long start;
-	private long end;
+	private final String bigFile;
+	private final String splitFile;
+	private final long start;
+	private final long end;
 
 	
     public callable_spliter(String m, String sp,long s, long e){

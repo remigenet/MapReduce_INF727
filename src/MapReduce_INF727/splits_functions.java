@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -37,7 +38,7 @@ public class splits_functions {
 				if (count>0) {
 					writer.close();
 				}
-				writer = new PrintWriter(output_folder+"S"+String.valueOf(count)+".txt", "UTF-8");
+				writer = new PrintWriter(output_folder+"S"+ count +".txt", StandardCharsets.UTF_8);
 				count++;
 			}
 			writer.println(sentences.get(row));

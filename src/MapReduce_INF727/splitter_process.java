@@ -13,10 +13,10 @@ public class splitter_process extends Thread{
 	//all threads of a process shared same in and out
 	//however not used anymore because not thread safe at all
 
-	private long start;
-	private long end;
-	private WritableByteChannel out;
-	private FileChannel in;
+	private final long start;
+	private final long end;
+	private final WritableByteChannel out;
+	private final FileChannel in;
 	
 	public splitter_process(long s, long e, WritableByteChannel out,FileChannel in){
         this.start=s;

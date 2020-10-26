@@ -5,8 +5,8 @@ import java.util.concurrent.Callable;
 
 public class check_ssh_callable implements Callable<String> {
 	//callable class to check if machine answer to ssh command and clean it 
-	private String machine;
-	private String current_user;
+	private final String machine;
+	private final String current_user;
 	
     public check_ssh_callable(String m, String cu){
         this.machine=m;

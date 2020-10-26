@@ -5,10 +5,10 @@ import java.util.concurrent.Callable;
 
 public class deploy_file_callable implements Callable<String> {
 
-	private String machine;
-    private String data_file;
-    private String directory;
-    private String split_number;
+	private final String machine;
+    private final String data_file;
+    private final String directory;
+    private final String split_number;
 	
     public deploy_file_callable(String machine, String data_file, String directory, String split_number){
         this.machine=machine;

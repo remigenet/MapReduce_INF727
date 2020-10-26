@@ -7,9 +7,9 @@ import java.util.concurrent.Callable;
 
 public class shuffle_launcher implements Callable<String>{
 	//callable class used for launching the shuffle phase on the cluster
-	private String machine;
-	private String number;
-	private String current_user;
+	private final String machine;
+	private final String number;
+	private final String current_user;
     
     public shuffle_launcher(String m, String n, String cu){
         this.machine=m;

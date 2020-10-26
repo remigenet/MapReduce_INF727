@@ -7,9 +7,9 @@ public class map_shuffle_launcher implements Callable<String> {
 	//callable class used for launching the map shuffle phase on the cluster
 	//for information about this phase read the repport
 	
-	private String machine;
-	private String number;
-	private String current_user;
+	private final String machine;
+	private final String number;
+	private final String current_user;
     
     public map_shuffle_launcher(String m, String n, String cu){
         this.machine=m;

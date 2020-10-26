@@ -6,15 +6,16 @@ import java.nio.CharBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 
 public class wordcount_multiprocessing_callable implements Callable<HashMap<String, Integer>>{
 	//callable class for the multiprocessed wordcount
-	private String bigFile;
-	private long start;
-	private long end;
+	private final String bigFile;
+	private final long start;
+	private final long end;
 	
     public wordcount_multiprocessing_callable(String m, long s, long e){
         this.bigFile=m;
@@ -47,7 +48,7 @@ public class wordcount_multiprocessing_callable implements Callable<HashMap<Stri
             if (count>1000 || pos>=end-1 ){
             	
 	            bb.position(start).limit(pos);
-	            charBuffer = Charset.forName("UTF-8").decode(bb);
+	            charBuffer = StandardCharsets.UTF_8.decode(bb);
 	     
 	            line=charBuffer.toString();
 	            charBuffer=null;

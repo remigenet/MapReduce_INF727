@@ -9,10 +9,10 @@ public class reduce_for_map_reduce_shuffle_launcher implements Callable<String>{
 	//callable class used for launching the reduce phase  on the cluster if using the map reduce shuffle phase before
 	//information about this phase on the repport
 	
-	private String machine;
-	private String number;
-	private String master_node;
-	private String current_user;
+	private final String machine;
+	private final String number;
+	private final String master_node;
+	private final String current_user;
     
     public reduce_for_map_reduce_shuffle_launcher(String m, String n, String mn, String cu){
         this.machine=m;
