@@ -5,6 +5,7 @@ import static java.nio.file.StandardOpenOption.READ;
 import java.nio.CharBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -41,9 +42,8 @@ public class wordcount_multiprocessing_callable implements Callable<HashMap<Stri
         CharBuffer charBuffer;
         //here read and count 1000 row by 1000 row to not depass Charbuffer capacity
         while(bb.hasRemaining() && pos<end){
-
-			//noinspection StatementWithEmptyBody
-			while(bb.get(pos++)!='\n' && pos<end);
+            
+            while(bb.get(pos++)!='\n' && pos<end);
             count++;
             if (count>1000 || pos>=end-1 ){
             	

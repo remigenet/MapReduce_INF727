@@ -15,4 +15,9 @@ public class mapreduce_parameters {
 		this.mode=m;
 	}
 	
+	public static void print_parameters(mapreduce_parameters my_params) {
+		System.out.println("The parameters of the mapreduce system are:");
+		System.out.println("split function: "+my_params.split_function+", compression: "+my_params.compression+", mode: "+my_params.mode);
+	}
+	
 }

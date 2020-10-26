@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MapReduce_INF727:jar">
+    <output-path>$PROJECT_DIR$/classes/artifacts/MapReduce_INF727_jar</output-path>
+    <root id="archive" name="MapReduce_INF727_jar.jar">
+      <element id="module-output" name="MapReduce_INF727" />
+    </root>
+  </artifact>
+</component>

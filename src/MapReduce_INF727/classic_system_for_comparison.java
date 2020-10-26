@@ -6,11 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -18,7 +14,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 
-@SuppressWarnings("ResultOfMethodCallIgnored")
 public class  classic_system_for_comparison{
 	//classic system of wordcount to compare with mapreduce system
 	//contain two way of dealing with wordcount, a classic sequential one and a multiprocessed one
@@ -29,11 +24,11 @@ public class  classic_system_for_comparison{
         try {
             FileReader fr = new FileReader(args[0]);
             BufferedReader br = new BufferedReader(fr);
-            if(args[1].equals("classic")) {
+            if(Objects.equals(args[1], "classic")) {
             		HashMap<String, Integer> my_dict = word_count_dict(br);
             		create_result_file(my_dict, "classic", args[3]);
             }
-            else if (args[1].equals("multi")) {
+            else if (Objects.equals(args[1], "multi")) {
             	HashMap<String, Integer> my_dict = counter_multiprocessing(args[0], Integer.parseInt(args[2]));
             	create_result_file(my_dict, "multi", args[3]);
             }
@@ -99,8 +94,7 @@ public class  classic_system_for_comparison{
     
    
     
-	@SuppressWarnings("ResultOfMethodCallIgnored")
-    public static void create_result_file(HashMap<String, Integer> my_result, String type, String current_user) throws IOException, InterruptedException {
+	public static void create_result_file(HashMap<String, Integer> my_result, String type, String current_user) throws IOException, InterruptedException {
 		//function used to create a txt file with the HashMap created during the wordcount
 		//used bufferedwriter for quick write
 		File file= new File("/tmp/"+current_user+"_resultat/resultat_sequential_"+type+".txt");

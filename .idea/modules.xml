@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/mapreduce_INF727.iml" filepath="$PROJECT_DIR$/mapreduce_INF727.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MapReduce_INF727.iml" filepath="$PROJECT_DIR$/MapReduce_INF727.iml" />
     </modules>
   </component>
 </project>
