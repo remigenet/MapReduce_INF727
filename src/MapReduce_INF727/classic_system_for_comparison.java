@@ -64,7 +64,7 @@ public class  classic_system_for_comparison{
         long end=data.length();
         long size= end/nb_split;
         if(size>2147483647-100000) {
-        	nb_split=(int) (end/(2147483647-100000));
+        	nb_split=(int) (end/(2147483647-100000))+1;
         }
         //Find the split position where the is no word to don't cut them in two
         ArrayList<Long> split_position=byte_finder.find_byte_split_position(File, nb_split);
