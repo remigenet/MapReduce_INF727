@@ -29,9 +29,7 @@ public class map_launcher implements Callable<String> {
             p.waitFor();
             p.destroy();
             return number + " 111";
-        } catch (IOException e) {
-            return number + " 000";
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             return number + " 000";
         }
 

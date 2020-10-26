@@ -19,12 +19,12 @@ import java.util.concurrent.Future;
 public class master_cluster_and_deployement {
 
 
-public static machine_cluster find_cluster(ArrayList<String> machines, int nb_machines, String split_folder, String jar_path, float backup_percent, String current_user) throws IOException, InterruptedException, ExecutionException {
+public static machine_cluster find_cluster(ArrayList<String> machines, int nb_machines, float backup_percent, String current_user) throws IOException, InterruptedException, ExecutionException {
 	//function that check machine answer to a ssh connection and create a machine_cluster object with the one answering the more rapidly
 	ExecutorService executorService = Executors.newCachedThreadPool();
-	ArrayList<Integer> todo_list = new ArrayList<Integer>();
-    ArrayList<String> machine_unused = new ArrayList<String>();
-    HashMap<String, String> machine_used= new HashMap< String,String>();
+	ArrayList<Integer> todo_list = new ArrayList<>();
+    ArrayList<String> machine_unused = new ArrayList<>();
+    HashMap<String, String> machine_used= new HashMap<>();
     
 
     ProcessBuilder pb = new ProcessBuilder("hostname");
@@ -36,21 +36,21 @@ public static machine_cluster find_cluster(ArrayList<String> machines, int nb_ma
     int machine_row=0;
     
 
-	Set<Callable<String>> callables = new HashSet<Callable<String>>();
+	Set<Callable<String>> callables = new HashSet<>();
 	
     for(int iter=0;iter<machines.size(); iter++) {
-    	if (master_node.contentEquals(machines.get(machine_row))==false) {
+    	if (!master_node.contentEquals(machines.get(machine_row))) {
     		callables.add(new initial_tester(current_user+"@"+machines.get(machine_row), current_user));
     	}
     	machine_row++;
     }
     List<Future<String>> futures = executorService.invokeAll(callables);
-    Map<Integer, String> machine_speed=new TreeMap<Integer, String>();
+    Map<Integer, String> machine_speed= new TreeMap<>();
     for (Future<String> future : futures) {
         String result=future.get();
         String machine=result.split(" ")[0];
-        int time_taken=Integer.valueOf(result.split(" ")[2]);
-        if(machine.equals("000")==false) {
+        int time_taken=Integer.parseInt(result.split(" ")[2]);
+        if(!machine.equals("000")) {
         	machine_speed.put(time_taken, machine);
         }
 
@@ -74,8 +74,7 @@ public static machine_cluster find_cluster(ArrayList<String> machines, int nb_ma
     	count++;
     }
     executorService.shutdown();
-    machine_cluster my_cluster= new machine_cluster(machine_used, machine_unused);
-    return my_cluster;
+	return new machine_cluster(machine_used, machine_unused);
 	
 }
 
@@ -87,7 +86,7 @@ public static  machine_cluster deploy_split_on_cluster(machine_cluster my_cluste
 	ExecutorService executorService = Executors.newCachedThreadPool();
 	while(notalldone) {
 		notalldone=false;
-	    Set<Callable<String>> callables_deploy = new HashSet<Callable<String>>();
+	    Set<Callable<String>> callables_deploy = new HashSet<>();
 	    for(String split: my_cluster.machine_used.keySet()) {
 	    	if(compression) {
 	    		callables_deploy.add(new initial_deployer(my_cluster.machine_used.get(split),split_folder+"S"+split+".txt.gz", jar_path,"/tmp/"+current_user+"/splits/",Integer.valueOf(split), current_user));
@@ -101,7 +100,7 @@ public static  machine_cluster deploy_split_on_cluster(machine_cluster my_cluste
 	    for (Future<String> future : futures_deploy) {
             String result=future.get();
             String machine=result.split(" ")[0];
-            if(machine.equals("000")==true) {
+            if(machine.equals("000")) {
             	notalldone=true;
             	my_cluster.machine_used.remove(result.split(" ")[1]);
             	my_cluster.machine_used.put(result.split(" ")[0], my_cluster.machine_unused.get(0));

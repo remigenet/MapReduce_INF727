@@ -17,12 +17,9 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class functions {
     //This class store all usefull functions that are called in the projet and that don't belong to a specific part
-    public static void main(String[] args) {
-
-    }
-
 
     public static String get_user() throws IOException {
 
@@ -38,9 +35,11 @@ public class functions {
 
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void check_or_create_dir(String dir_path, String machine) throws IOException, InterruptedException {
 
-        Process p = null;
+        Process p;
+        //noinspection IfStatementWithIdenticalBranches
         if (machine == null) {
             String[] create_dir_cmd = {"mkdir", "-p", dir_path};
             ProcessBuilder pb_mkdir = new ProcessBuilder(create_dir_cmd);
@@ -124,20 +123,20 @@ public class functions {
         FileReader fr = new FileReader(filename);
         BufferedReader br = new BufferedReader(fr);
         Scanner sc = new Scanner(br);
-        String text = "";
+        StringBuilder text = new StringBuilder();
 
         while (sc.hasNextLine()) {
-            text += sc.nextLine() + "\n";
+            text.append(sc.nextLine()).append("\n");
 
         }
         sc.close();
-        return text;
+        return text.toString();
     }
 
     public static ArrayList<String> get_machine(String machines_list_file) throws IOException {
         //function used to store the machine list in a given file in a ArrayList object
         BufferedReader br = new BufferedReader(new FileReader(machines_list_file));
-        ArrayList<String> machines = new ArrayList<String>();
+        ArrayList<String> machines = new ArrayList<>();
         String machine;
         while ((machine = br.readLine()) != null) {
             machines.add(machine);
@@ -162,6 +161,7 @@ public class functions {
         //the function still can be very usefull
         for (int iter = 0; iter < my_list.size(); iter++) {
             if (my_list.get(iter).equals(element)) {
+                //noinspection SuspiciousListRemoveInLoop
                 my_list.remove(iter);
             }
         }
@@ -172,6 +172,7 @@ public class functions {
         //same function as above but for different type of arraylist
         for (int iter = 0; iter < my_list.size(); iter++) {
             if (my_list.get(iter).equals(element)) {
+                //noinspection SuspiciousListRemoveInLoop
                 my_list.remove(iter);
             }
         }
@@ -181,9 +182,9 @@ public class functions {
     public static void create_result_file(HashMap<String, Integer> my_result, int nb_machines, String current_user) throws IOException, InterruptedException {
         //functions to create the result file after the mapreduce process
         functions.check_or_create_dir("/tmp/" + current_user + "_resultat/", null);
-        BufferedWriter writer = new BufferedWriter(new FileWriter("/tmp/" + current_user + "_resultat/resultat" + Integer.valueOf(nb_machines) + ".txt", true));
+        BufferedWriter writer = new BufferedWriter(new FileWriter("/tmp/" + current_user + "_resultat/resultat" + nb_machines + ".txt", true));
         for (String mot : my_result.keySet()) {
-            writer.append(mot + " " + my_result.get(mot) + "\n");
+            writer.append(mot).append(" ").append(String.valueOf(my_result.get(mot))).append("\n");
         }
         writer.close();
     }

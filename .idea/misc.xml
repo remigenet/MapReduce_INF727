@@ -1,5 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="EntryPointsManager">
+    <pattern value="MapReduce_INF727.byte_finder" />
+    <pattern value="MapReduce_INF727.callable_spliter" />
+    <pattern value="MapReduce_INF727.callable_spliter" method="callable_spliter" />
+    <pattern value="MapReduce_INF727.check_ssh_callable" />
+    <pattern value="MapReduce_INF727.check_ssh_callable" method="check_ssh_callable" />
+    <pattern value="MapReduce_INF727.classic_system_for_comparison" />
+    <pattern value="MapReduce_INF727.clean" />
+    <pattern value="MapReduce_INF727.functions" method="delete_element" />
+    <pattern value="MapReduce_INF727.deploy" />
+    <pattern value="MapReduce_INF727.deploy_file_callable" />
+    <pattern value="MapReduce_INF727.deploy_file_callable" method="deploy_file_callable" />
+    <pattern value="MapReduce_INF727.file_comparator" />
+    <pattern value="MapReduce_INF727.byte_finder" method="find_byte_split_position_for_multithread" />
+    <pattern value="MapReduce_INF727.functions" />
+    <pattern value="MapReduce_INF727.gunzip_callable" />
+    <pattern value="MapReduce_INF727.gunzip_callable" method="gunzip_callable" />
+    <pattern value="MapReduce_INF727.master_map_and_shuffles_functions" method="gunzip_file" />
+    <pattern value="MapReduce_INF727.gzip_callable" />
+    <pattern value="MapReduce_INF727.gzip_callable" method="gzip_callable" />
+    <pattern value="MapReduce_INF727.make_big_txt_file" />
+    <pattern value="MapReduce_INF727.master" />
+    <pattern value="MapReduce_INF727.master_cluster_and_deployement" />
+    <pattern value="MapReduce_INF727.master_map_and_shuffles_functions" />
+    <pattern value="MapReduce_INF727.master_reduce" />
+    <pattern value="MapReduce_INF727.slave" />
+    <pattern value="MapReduce_INF727.splits_functions" />
+    <pattern value="MapReduce_INF727.initial_deployer" />
+    <pattern value="MapReduce_INF727.initial_deployer" method="initial_deployer" />
+    <pattern value="MapReduce_INF727.initial_tester" />
+    <pattern value="MapReduce_INF727.initial_tester" method="initial_tester" />
+    <pattern value="MapReduce_INF727.master_map_and_shuffles_functions" method="launch_map" />
+    <pattern value="MapReduce_INF727.master_map_and_shuffles_functions" method="launch_map_reduce_shuffle" />
+    <pattern value="MapReduce_INF727.master_map_and_shuffles_functions" method="launch_map_shuffle" />
+    <pattern value="MapReduce_INF727.master_reduce" method="launch_reduce" />
+    <pattern value="MapReduce_INF727.master_reduce" method="launch_reduce_for_map_reduce_shuflle" />
+    <pattern value="MapReduce_INF727.master_map_and_shuffles_functions" method="launch_shuffle" />
+    <pattern value="MapReduce_INF727.machine_cluster" />
+    <pattern value="MapReduce_INF727.machine_cluster" method="machine_cluster" />
+    <pattern value="MapReduce_INF727.byte_finder" method="main" />
+    <pattern value="MapReduce_INF727.classic_system_for_comparison" method="main" />
+    <pattern value="MapReduce_INF727.clean" method="main" />
+    <pattern value="MapReduce_INF727.deploy" method="main" />
+    <pattern value="MapReduce_INF727.file_comparator" method="main" />
+    <pattern value="MapReduce_INF727.functions" method="main" />
+    <pattern value="MapReduce_INF727.make_big_txt_file" method="main" />
+    <pattern value="MapReduce_INF727.master" method="main" />
+    <pattern value="MapReduce_INF727.slave" method="main" />
+    <pattern value="MapReduce_INF727.map_launcher" />
+    <pattern value="MapReduce_INF727.map_launcher" method="map_launcher" />
+    <pattern value="MapReduce_INF727.map_reduce_shuffle_launcher" />
+    <pattern value="MapReduce_INF727.map_reduce_shuffle_launcher" method="map_reduce_shuffle_launcher" />
+    <pattern value="MapReduce_INF727.map_shuffle_launcher" />
+    <pattern value="MapReduce_INF727.map_shuffle_launcher" method="map_shuffle_launcher" />
+    <pattern value="MapReduce_INF727.mapreduce_parameters" />
+    <pattern value="MapReduce_INF727.mapreduce_parameters" method="mapreduce_parameters" />
+    <pattern value="MapReduce_INF727.functions" method="move_element" />
+    <pattern value="MapReduce_INF727.functions" method="readFile" />
+    <pattern value="MapReduce_INF727.reduce_for_map_reduce_shuffle_launcher" />
+    <pattern value="MapReduce_INF727.reduce_for_map_reduce_shuffle_launcher" method="reduce_for_map_reduce_shuffle_launcher" />
+    <pattern value="MapReduce_INF727.reduce_launcher" />
+    <pattern value="MapReduce_INF727.reduce_launcher" method="reduce_launcher" />
+    <pattern value="MapReduce_INF727.shuffle_launcher" />
+    <pattern value="MapReduce_INF727.shuffle_launcher" method="shuffle_launcher" />
+    <pattern value="MapReduce_INF727.splits_functions" method="splits" />
+    <pattern value="MapReduce_INF727.splitter_process" />
+    <pattern value="MapReduce_INF727.splitter_process" method="splitter_process" />
+    <pattern value="MapReduce_INF727.wordcount_multiprocessing_callable" />
+    <pattern value="MapReduce_INF727.wordcount_multiprocessing_callable" method="wordcount_multiprocessing_callable" />
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_14" default="false" project-jdk-name="openjdk-15" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/classes" />
   </component>

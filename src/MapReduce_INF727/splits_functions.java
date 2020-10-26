@@ -4,26 +4,21 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+@SuppressWarnings({"ResultOfMethodCallIgnored", "UnusedAssignment"})
 public class splits_functions {
 
-	public static void splits(String input_file, int nb_machines, String output_folder) throws FileNotFoundException, UnsupportedEncodingException {
+	public static void splits(String input_file, int nb_machines, String output_folder) throws IOException {
 		//first split function
 		//not working on huge file because of strings limits
 		//quite slow because to read and write all the file 
@@ -41,15 +36,16 @@ public class splits_functions {
 				writer = new PrintWriter(output_folder+"S"+ count +".txt", StandardCharsets.UTF_8);
 				count++;
 			}
-			writer.println(sentences.get(row));
+			Objects.requireNonNull(writer).println(sentences.get(row));
 						
 	    		
 		}
-		writer.close();
+		Objects.requireNonNull(writer).close();
 	}
 	
 	
-	public static void splits_for_large_file(String input_file, int nb_machines, String output_folder, boolean compression, String current_user) throws IOException, InterruptedException {
+	@SuppressWarnings("ResultOfMethodCallIgnored")
+	public static void splits_for_large_file(String input_file, int nb_machines, boolean compression, String current_user) throws IOException, InterruptedException {
 		//second version of the spliter function
 		//use the linux split function to do the job
 		//then rename the file getted to match S0, S1, ... names
@@ -75,7 +71,7 @@ public class splits_functions {
         
         String file;
         int split_number=0;
-        Set<Callable<String>> callables = new HashSet<Callable<String>>();
+        Set<Callable<String>> callables = new HashSet<>();
 
         while ((file = br.readLine()) != null) {
         	String[] rename_cmd = { "mv", "/tmp/"+current_user+"/splits/"+file,"/tmp/"+current_user+"/splits/S"+split_number+".txt" };
@@ -104,14 +100,13 @@ public class splits_functions {
 	   ExecutorService executorService = Executors.newCachedThreadPool();
 	   File data=new File(bigFile);
        long end=data.length();
-       data=null;
-       long size= end/nb_split;
+	   long size= end/nb_split;
        if(size>2147483647-100000) {
        	nb_split=(int) (end/(2147483647-100000));
        }
 	   
 	   ArrayList<Long> all_split_position=byte_finder.find_byte_split_position(bigFile, nb_split);
-        Set<Callable<String>> callables = new HashSet<Callable<String>>();
+        Set<Callable<String>> callables = new HashSet<>();
         System.out.println(end);
         System.out.println(all_split_position);
         int iter=0;

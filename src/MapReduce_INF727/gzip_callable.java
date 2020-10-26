@@ -3,6 +3,7 @@ package MapReduce_INF727;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class gzip_callable implements Callable<String> {
     //class used to compress file in multiprocessing
     private final String file;
@@ -11,6 +12,7 @@ public class gzip_callable implements Callable<String> {
         this.file = m;
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     public String call() throws InterruptedException, IOException {
 

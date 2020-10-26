@@ -4,10 +4,6 @@ import java.io.IOException;
 
 public class deploy {
 
-    public static void main(String[] args) {
-
-    }
-
     public static void deploy_file(String machine, String file, String destination) throws IOException, InterruptedException {
 
         if (machine != null) {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
+@SuppressWarnings("ALL")
 public class master {
 
     public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
@@ -70,7 +71,7 @@ public class master {
         //send ssh connection to all the machines list give and return a machine_cluster object with the one responding the more quickly
         lStartTime = System.currentTimeMillis();
         System.out.println("Creating the cluster");
-        machine_cluster my_cluster = master_cluster_and_deployement.find_cluster(machines, nb_machines, "/tmp/" + current_user + "/splits/", slave_jar_path, (float) 0.2, current_user);
+        machine_cluster my_cluster = master_cluster_and_deployement.find_cluster(machines, nb_machines, (float) 0.2, current_user);
         System.out.println("the cluster is:");
         System.out.println(my_cluster.machine_used);
         nb_machines = my_cluster.machine_used.size();
@@ -81,10 +82,10 @@ public class master {
 
         System.out.println("start splitting");
         lStartTime = System.currentTimeMillis();
-        if (parameters.split_function == "multiproc") {
+        if (parameters.split_function.equals("multiproc")) {
             splits_functions.spliter_multiproc(input_file, nb_machines, "/tmp/" + current_user + "/splits/", parameters.compression, current_user);
-        } else if (parameters.split_function == "linux") {
-            splits_functions.splits_for_large_file(input_file, nb_machines, "/tmp/" + current_user + "/splits/", parameters.compression, current_user);
+        } else if (parameters.split_function.equals("linux")) {
+            splits_functions.splits_for_large_file(input_file, nb_machines, parameters.compression, current_user);
         } else {
             System.out.println("Invalid split function, please select a valid parameter");
             System.exit(1);
@@ -97,81 +98,76 @@ public class master {
         //deploy the split on the cluster
         System.out.println("launch deployment");
         lStartTime = System.currentTimeMillis();
-        my_cluster = master_cluster_and_deployement.deploy_split_on_cluster(my_cluster, "/tmp/" + current_user + "/splits/", slave_jar_path, parameters.compression, current_user);
+        master_cluster_and_deployement.deploy_split_on_cluster(my_cluster, "/tmp/" + current_user + "/splits/", slave_jar_path, parameters.compression, current_user);
         lEndTime = System.currentTimeMillis();
         time_elapsed = lEndTime - lStartTime;
         System.out.println("Deployment on cluster elapsed time in seconds: " + time_elapsed / 1000);
 
         //unzip file on machines if compressed
         if (parameters.compression) {
-            my_cluster = master_map_and_shuffles_functions.gunzip_file(my_cluster, "/tmp/" + current_user + "/splits/", slave_jar_path, current_user);
+            master_map_and_shuffles_functions.gunzip_file(my_cluster, current_user);
         }
         //launch map phase, or map_shuffle, or map_reduce_shuffle depending on your choice
-        if (parameters.mode == "classic") {
-
-            //launch map phase
-            System.out.println("launch map");
-            lStartTime = System.currentTimeMillis();
-            my_cluster = master_map_and_shuffles_functions.launch_map(my_cluster, "/tmp/" + current_user + "/splits/", slave_jar_path, parameters.compression, current_user);
-            lEndTime = System.currentTimeMillis();
-            time_elapsed = lEndTime - lStartTime;
-            System.out.println("mapping on cluster elapsed time in seconds: " + time_elapsed / 1000);
-
-            //launch shuffle phase
-            System.out.println("launch shuffle");
-            lStartTime = System.currentTimeMillis();
-            my_cluster = master_map_and_shuffles_functions.launch_shuffle(my_cluster, "/tmp/" + current_user + "/splits/", slave_jar_path, parameters.compression, current_user);
-            lEndTime = System.currentTimeMillis();
-            time_elapsed = lEndTime - lStartTime;
-            System.out.println("shuffling on cluster elapsed time in seconds: " + time_elapsed / 1000);
-
-            //launch reduce
-            System.out.println("launch reduce");
-            lStartTime = System.currentTimeMillis();
-            my_result = master_reduce.launch_reduce(my_cluster, "/tmp/" + current_user + "/splits/", slave_jar_path, true, parameters.compression, current_user);
-            lEndTime = System.currentTimeMillis();
-            time_elapsed = lEndTime - lStartTime;
-            System.out.println("reducing elapsed time in seconds: " + time_elapsed / 1000);
-
-        } else if (parameters.mode == "map_shuffle") {
-
-            //launch map shuffle
-            System.out.println("launch map shuffle");
-            lStartTime = System.currentTimeMillis();
-            my_cluster = master_map_and_shuffles_functions.launch_map_shuffle(my_cluster, "/tmp/" + current_user + "/splits/", slave_jar_path, parameters.compression, current_user);
-            lEndTime = System.currentTimeMillis();
-            time_elapsed = lEndTime - lStartTime;
-            System.out.println("mapping_shuffling on cluster elapsed time in seconds: " + time_elapsed / 1000);
-
-            //launch reduce
-            System.out.println("launch reduce");
-            lStartTime = System.currentTimeMillis();
-            my_result = master_reduce.launch_reduce(my_cluster, "/tmp/" + current_user + "/splits/", slave_jar_path, true, parameters.compression, current_user);
-            lEndTime = System.currentTimeMillis();
-            time_elapsed = lEndTime - lStartTime;
-            System.out.println("reducing elapsed time in seconds: " + time_elapsed / 1000);
-
-        } else if (parameters.mode == "map_reduce_shuffle") {
-
-            //launch map reduce shuffle
-            System.out.println("launch map reduce shuffle");
-            lStartTime = System.currentTimeMillis();
-            my_cluster = master_map_and_shuffles_functions.launch_map_reduce_shuffle(my_cluster, "/tmp/" + current_user + "/splits/", slave_jar_path, parameters.compression, current_user);
-            lEndTime = System.currentTimeMillis();
-            time_elapsed = lEndTime - lStartTime;
-            System.out.println("mapping reducing shuffling on cluster elapsed time in seconds: " + time_elapsed / 1000);
-
-            //launch reduce
-            System.out.println("launch reduce");
-            lStartTime = System.currentTimeMillis();
-            my_result = master_reduce.launch_reduce_for_map_reduce_shuflle(my_cluster, "/tmp/" + current_user + "/splits/", slave_jar_path, true, parameters.compression, current_user);
-            lEndTime = System.currentTimeMillis();
-            time_elapsed = lEndTime - lStartTime;
-            System.out.println("reducing elapsed time in seconds: " + time_elapsed / 1000);
-
-        } else {
-            System.out.println("parameters mode unknown, select a valid parameter");
-            System.exit(1);
+        //launch map phase
+        //launch shuffle phase
+        //launch reduce
+        //launch map shuffle
+        //launch reduce
+        //launch map reduce shuffle
+        //launch reduce
+        switch (parameters.mode) {
+            case "classic" -> {
+                System.out.println("launch map");
+                lStartTime = System.currentTimeMillis();
+                master_map_and_shuffles_functions.launch_map(my_cluster, current_user);
+                lEndTime = System.currentTimeMillis();
+                time_elapsed = lEndTime - lStartTime;
+                System.out.println("mapping on cluster elapsed time in seconds: " + time_elapsed / 1000);
+                System.out.println("launch shuffle");
+                lStartTime = System.currentTimeMillis();
+                master_map_and_shuffles_functions.launch_shuffle(my_cluster, "/tmp/" + current_user + "/splits/", slave_jar_path, parameters.compression, current_user);
+                lEndTime = System.currentTimeMillis();
+                time_elapsed = lEndTime - lStartTime;
+                System.out.println("shuffling on cluster elapsed time in seconds: " + time_elapsed / 1000);
+                System.out.println("launch reduce");
+                lStartTime = System.currentTimeMillis();
+                my_result = master_reduce.launch_reduce(my_cluster, true, current_user);
+                lEndTime = System.currentTimeMillis();
+                time_elapsed = lEndTime - lStartTime;
+                System.out.println("reducing elapsed time in seconds: " + time_elapsed / 1000);
+            }
+            case "map_shuffle" -> {
+                System.out.println("launch map shuffle");
+                lStartTime = System.currentTimeMillis();
+                master_map_and_shuffles_functions.launch_map_shuffle(my_cluster, current_user);
+                lEndTime = System.currentTimeMillis();
+                time_elapsed = lEndTime - lStartTime;
+                System.out.println("mapping_shuffling on cluster elapsed time in seconds: " + time_elapsed / 1000);
+                System.out.println("launch reduce");
+                lStartTime = System.currentTimeMillis();
+                my_result = master_reduce.launch_reduce(my_cluster, true, current_user);
+                lEndTime = System.currentTimeMillis();
+                time_elapsed = lEndTime - lStartTime;
+                System.out.println("reducing elapsed time in seconds: " + time_elapsed / 1000);
+            }
+            case "map_reduce_shuffle" -> {
+                System.out.println("launch map reduce shuffle");
+                lStartTime = System.currentTimeMillis();
+                master_map_and_shuffles_functions.launch_map_reduce_shuffle(my_cluster, current_user);
+                lEndTime = System.currentTimeMillis();
+                time_elapsed = lEndTime - lStartTime;
+                System.out.println("mapping reducing shuffling on cluster elapsed time in seconds: " + time_elapsed / 1000);
+                System.out.println("launch reduce");
+                lStartTime = System.currentTimeMillis();
+                my_result = master_reduce.launch_reduce_for_map_reduce_shuflle(my_cluster, true, current_user);
+                lEndTime = System.currentTimeMillis();
+                time_elapsed = lEndTime - lStartTime;
+                System.out.println("reducing elapsed time in seconds: " + time_elapsed / 1000);
+            }
+            default -> {
+                System.out.println("parameters mode unknown, select a valid parameter");
+                System.exit(1);
+            }
         }
 
         //create the result file

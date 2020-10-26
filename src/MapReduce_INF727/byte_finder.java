@@ -11,11 +11,6 @@ import java.util.HashMap;
 
 public class byte_finder {
 
-    public static void main(String[] args) throws IOException {
-
-
-    }
-
     public static ArrayList<Long> find_byte_split_position(String file, int nb_cut) throws IOException {
         // function used to find space in the text in order to don't cut word. the number of cut need to reduce the approximate
         //split size under the max integer value
@@ -23,7 +18,7 @@ public class byte_finder {
         MappedByteBuffer bb;
         FileChannel in = FileChannel.open(Paths.get(file), READ);
         long split_size_approximate = in.size() / nb_cut;
-        ArrayList<Long> split_positions = new ArrayList<Long>();
+        ArrayList<Long> split_positions = new ArrayList<>();
         long split_place = 0;
         split_positions.add(split_place);
 
@@ -33,6 +28,7 @@ public class byte_finder {
 
             bb = in.map(FileChannel.MapMode.READ_ONLY, estimated_split_position - 50, 100);
             pos = 0;
+            //noinspection StatementWithEmptyBody
             while (bb.get(pos++) != ' ') ;
             split_place = estimated_split_position - 50 + pos;
             split_positions.add(split_place);
@@ -56,10 +52,10 @@ public class byte_finder {
         long split_size_approximate = in.size() / nb_cut / nb_thread;
 
         long split_place = 0;
-        HashMap<Integer, ArrayList<Long>> split_positions_all_process = new HashMap<Integer, ArrayList<Long>>();
+        HashMap<Integer, ArrayList<Long>> split_positions_all_process = new HashMap<>();
 
         for (int split = 0; split < nb_cut; split++) {
-            ArrayList<Long> split_positions = new ArrayList<Long>();
+            ArrayList<Long> split_positions = new ArrayList<>();
             split_positions.add(split_place);
             for (int thread = 0; thread < nb_thread; thread++) {
 
@@ -67,6 +63,7 @@ public class byte_finder {
 
                 bb = in.map(FileChannel.MapMode.READ_ONLY, estimated_split_position - 50, 100);
                 pos = 0;
+                //noinspection StatementWithEmptyBody
                 while (bb.get(pos++) != ' ') ;
                 split_place = estimated_split_position - 50 + pos;
                 if (split == nb_cut - 1 && thread == nb_thread - 1) {

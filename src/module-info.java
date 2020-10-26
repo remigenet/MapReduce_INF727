@@ -1,3 +1,3 @@
-module MapReduce_INF727 {
+module MapReduce_INF {
 	exports MapReduce_INF727;
 }

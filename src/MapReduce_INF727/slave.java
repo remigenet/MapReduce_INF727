@@ -25,18 +25,13 @@ public class slave {
         if (args[0].contentEquals("-1")) {
             gunzip_split(args[1], args[2]);
         }
-        if (args[0].equals("0")) {
-            map(args[1], args[2]);
-        } else if (args[0].equals("1")) {
-            shuffle(args[1], args[2]);
-        } else if (args[0].equals("2")) {
-            reduce(args[1], args[3], args[2]);
-        } else if (args[0].equals("3")) {
-            map_shuffle(args[1], args[2]);
-        } else if (args[0].equals("4")) {
-            map_reduce_shuffle(args[1], args[2]);
-        } else if (args[0].equals("5")) {
-            reduce_for_map_reduce_shuffle(args[1], args[3], args[2]);
+        switch (args[0]) {
+            case "0" -> map(args[1], args[2]);
+            case "1" -> shuffle(args[1], args[2]);
+            case "2" -> reduce(args[1], args[3], args[2]);
+            case "3" -> map_shuffle(args[1], args[2]);
+            case "4" -> map_reduce_shuffle(args[1], args[2]);
+            case "5" -> reduce_for_map_reduce_shuffle(args[1], args[3], args[2]);
         }
 
     }
@@ -56,7 +51,7 @@ public class slave {
 
             for (String word : line.split(" ")) {
 
-                writer.append(word + " 1\n");
+                writer.append(word).append(" 1\n");
 
             }
         }
@@ -83,7 +78,7 @@ public class slave {
         //create a HashMap associating a shuffle number to a bufferedwritter
         //avoid opening and closing bufferwritter between each word
         //very efficient way to do
-        HashMap<Integer, BufferedWriter> my_map = new HashMap<Integer, BufferedWriter>();
+        HashMap<Integer, BufferedWriter> my_map = new HashMap<>();
         for (int iter = 0; iter < nb_machines; iter++) {
             my_map.put(iter, new BufferedWriter(new FileWriter("/tmp/" + current_user + "/shuffles/" + iter + "-" + split_number + ".txt", true)));
         }
@@ -93,7 +88,7 @@ public class slave {
             for (String word : line.split(" ")) {
 
                 int receviver = Math.abs(word.hashCode() % nb_machines);
-                my_map.get(receviver).append(word + " \n");
+                my_map.get(receviver).append(word).append(" \n");
                 hashset.add(String.valueOf(receviver));
 
             }
@@ -103,7 +98,7 @@ public class slave {
             my_map.get(iter).close();
         }
         //then send file to the receiver machine using multiprocessing
-        Set<Callable<String>> callables = new HashSet<Callable<String>>();
+        Set<Callable<String>> callables = new HashSet<>();
         for (String hash : hashset) {
             callables.add(new deploy_file_callable(my_cluster.get(Integer.valueOf(hash)), "/tmp/" + current_user + "/shuffles/" + hash + "-" + split_number + ".txt", "/tmp/" + current_user + "/shuffles_received/", split_number));
         }
@@ -127,7 +122,7 @@ public class slave {
         //create a HashMap associating a shuffle number to a bufferedwritter
         //avoid opening and closing bufferwritter between each word
         //very efficient way to do
-        HashMap<Integer, BufferedWriter> my_map = new HashMap<Integer, BufferedWriter>();
+        HashMap<Integer, BufferedWriter> my_map = new HashMap<>();
         for (int iter = 0; iter < nb_machines; iter++) {
             my_map.put(iter, new BufferedWriter(new FileWriter("/tmp/" + current_user + "/shuffles/" + iter + "-" + split_number + ".txt", true)));
         }
@@ -136,7 +131,7 @@ public class slave {
 
             String word = line.split(" ")[0];
             int receviver = Math.abs(word.hashCode() % nb_machines);
-            my_map.get(receviver).append(word + " \n");
+            my_map.get(receviver).append(word).append(" \n");
             hashset.add(String.valueOf(receviver));
         }
         //close all writers
@@ -144,7 +139,7 @@ public class slave {
             my_map.get(iter).close();
         }
         //then send file to the receiver machine using multiprocessing
-        Set<Callable<String>> callables = new HashSet<Callable<String>>();
+        Set<Callable<String>> callables = new HashSet<>();
         for (String hash : hashset) {
             callables.add(new deploy_file_callable(my_cluster.get(Integer.valueOf(hash)), "/tmp/" + current_user + "/shuffles/" + hash + "-" + split_number + ".txt", "/tmp/" + current_user + "/shuffles_received/", split_number));
         }
@@ -166,7 +161,7 @@ public class slave {
         HashMap<Integer, String> my_cluster = get_machines(current_user);
         //then do exactly as the shuffle phase do but using the value inside the dict instead of the one in the file
         int nb_machines = my_cluster.size();
-        HashMap<Integer, BufferedWriter> my_map = new HashMap<Integer, BufferedWriter>();
+        HashMap<Integer, BufferedWriter> my_map = new HashMap<>();
         Set<String> hashset = new HashSet<>();
         for (int iter = 0; iter < nb_machines; iter++) {
             my_map.put(iter, new BufferedWriter(new FileWriter("/tmp/" + current_user + "/shuffles/" + iter + "-" + split_number + ".txt", true)));
@@ -174,13 +169,13 @@ public class slave {
         for (String word : my_dict.keySet()) {
 
             int receviver = Math.abs(word.hashCode() % nb_machines);
-            my_map.get(receviver).append(word + " " + my_dict.get(word) + "\n");
+            my_map.get(receviver).append(word).append(" ").append(String.valueOf(my_dict.get(word))).append("\n");
             hashset.add(String.valueOf(receviver));
         }
         for (int iter = 0; iter < nb_machines; iter++) {
             my_map.get(iter).close();
         }
-        Set<Callable<String>> callables = new HashSet<Callable<String>>();
+        Set<Callable<String>> callables = new HashSet<>();
         for (String hash : hashset) {
 
             callables.add(new deploy_file_callable(my_cluster.get(Integer.valueOf(hash)), "/tmp/" + current_user + "/shuffles/" + hash + "-" + split_number + ".txt", "/tmp/" + current_user + "/shuffles_received/", split_number));
@@ -201,8 +196,8 @@ public class slave {
         p.waitFor();
         BufferedReader br = new BufferedReader(new InputStreamReader((p.getInputStream())));
         String line;
-        HashMap<String, Integer> reduce_result = new HashMap<String, Integer>();
-        String word = null;
+        HashMap<String, Integer> reduce_result = new HashMap<>();
+        String word;
         String file;
         String occurence;
         while ((file = br.readLine()) != null) {
@@ -210,7 +205,7 @@ public class slave {
             while ((line = br2.readLine()) != null) {
                 word = line.split(" ")[0];
                 occurence = line.split(" ")[1];
-                reduce_result.put(word, reduce_result.getOrDefault(word, 0) + Integer.valueOf(occurence));
+                reduce_result.put(word, reduce_result.getOrDefault(word, 0) + Integer.parseInt(occurence));
             }
             br2.close();
         }
@@ -218,10 +213,10 @@ public class slave {
         BufferedWriter writer = new BufferedWriter(new FileWriter("/tmp/" + current_user + "/reduce/R" + split_number + ".txt", true));
         //copy the result on a file and send it back to the master node
         for (String mot : reduce_result.keySet()) {
-            writer.append(mot + " " + reduce_result.get(mot) + "\n");
+            writer.append(mot).append(" ").append(String.valueOf(reduce_result.get(mot))).append("\n");
         }
         writer.close();
-        Set<Callable<String>> callables = new HashSet<Callable<String>>();
+        Set<Callable<String>> callables = new HashSet<>();
         callables.add(new deploy_file_callable(Master_node, "/tmp/" + current_user + "/reduce/R" + split_number + ".txt", "/tmp/" + current_user + "/Reduce_received/", split_number));
         @SuppressWarnings("unused")
         List<Future<String>> futures = executorService.invokeAll(callables);
@@ -244,8 +239,8 @@ public class slave {
         p.waitFor();
         BufferedReader br = new BufferedReader(new InputStreamReader((p.getInputStream())));
         String line;
-        HashMap<String, Integer> reduce_result = new HashMap<String, Integer>();
-        String word = null;
+        HashMap<String, Integer> reduce_result = new HashMap<>();
+        String word;
         String file;
         while ((file = br.readLine()) != null) {
             BufferedReader br2 = new BufferedReader(new FileReader("/tmp/" + current_user + "/shuffles_received/" + file));
@@ -258,10 +253,10 @@ public class slave {
         functions.check_or_create_dir("/tmp/" + current_user + "/reduce/", null);
         BufferedWriter writer = new BufferedWriter(new FileWriter("/tmp/" + current_user + "/reduce/R" + split_number + ".txt", true));
         for (String mot : reduce_result.keySet()) {
-            writer.append(mot + " " + reduce_result.get(mot) + "\n");
+            writer.append(mot).append(" ").append(String.valueOf(reduce_result.get(mot))).append("\n");
         }
         writer.close();
-        Set<Callable<String>> callables = new HashSet<Callable<String>>();
+        Set<Callable<String>> callables = new HashSet<>();
         callables.add(new deploy_file_callable(Master_node, "/tmp/" + current_user + "/reduce/R" + split_number + ".txt", "/tmp/" + current_user + "/Reduce_received/", split_number));
         @SuppressWarnings("unused")
         List<Future<String>> futures = executorService.invokeAll(callables);
@@ -274,7 +269,7 @@ public class slave {
         //function that read the machines file received from the master node in order to get the cluster machine list
         String line;
         BufferedReader br = new BufferedReader(new FileReader("/tmp/" + current_user + "/machines.txt"));
-        HashMap<Integer, String> my_cluster = new HashMap<Integer, String>();
+        HashMap<Integer, String> my_cluster = new HashMap<>();
         while ((line = br.readLine()) != null) {
             Integer split_number = Integer.valueOf(line.split(" ")[0]);
             String machine = line.split(" ")[1];

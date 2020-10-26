@@ -10,9 +10,6 @@ import java.util.HashMap;
 public class file_comparator {
     //class used to compare the result of different wordcount method
 
-    public static void main(String[] args) {
-
-    }
 
     public static boolean compare_file(String file_1, String file_2) throws NumberFormatException, IOException {
         //create two HashMap containing word and occurence in each file
@@ -22,7 +19,7 @@ public class file_comparator {
         HashMap<String, Integer> dict_2 = get_dict(file_2);
         boolean same = true;
         for (String word : dict_1.keySet()) {
-            if (dict_1.get(word).equals(dict_2.get(word)) == false) {
+            if (!dict_1.get(word).equals(dict_2.get(word))) {
                 same = false;
                 System.out.println(word + " " + dict_1.get(word) + " " + dict_2.get(word));
             }
@@ -34,9 +31,9 @@ public class file_comparator {
 
     public static HashMap<String, Integer> get_dict(String file) throws NumberFormatException, IOException {
         //function that create the HashMap of word and occurence with the file
-        HashMap<String, Integer> reduce_result = new HashMap<String, Integer>();
+        HashMap<String, Integer> reduce_result = new HashMap<>();
         BufferedReader br = new BufferedReader(new FileReader(file));
-        int count = 0;
+        int count;
         String line;
         String word;
         while ((line = br.readLine()) != null) {
@@ -44,7 +41,7 @@ public class file_comparator {
             ArrayList<String> result = new ArrayList<>(Arrays.asList(line.split(" ")));
 
             word = result.get(0);
-            count = Integer.valueOf(result.get(result.size() - 1));
+            count = Integer.parseInt(result.get(result.size() - 1));
 
             reduce_result.put(word, count);
             //}

@@ -19,7 +19,7 @@ public class make_big_txt_file {
 		functions.check_or_create_dir("/tmp/data_file/", null);
 		FileReader fr = new FileReader("bible.txt");
         BufferedReader br = new BufferedReader(fr);
-        HashMap<Integer,String> my_dict= new HashMap<Integer,String>();
+        HashMap<Integer,String> my_dict= new HashMap<>();
         Integer count=0;
         String line;
         while ((line=br.readLine())!=null){
@@ -31,7 +31,7 @@ public class make_big_txt_file {
 		
         long init_size=my_dict.size();
         if(args.length>0) {
-        	multiplier=Long.valueOf(args[0]);
+        	multiplier=Long.parseLong(args[0]);
         }
         else {
         	multiplier=50;
@@ -39,8 +39,8 @@ public class make_big_txt_file {
         long nb_line_objectif=init_size*multiplier;
         BufferedWriter writer = new BufferedWriter( new PrintWriter("/tmp/data_file/bible_time"+ multiplier +".txt", StandardCharsets.UTF_8));
         for(long iter=0; iter<nb_line_objectif;iter++) {
-        	int nombreAleatoire =  (int)(Math.random() * ((init_size - 0) + 1));
-        	writer.append(my_dict.get(nombreAleatoire)+"\n");
+        	int nombreAleatoire =  (int)(Math.random() * ((init_size) + 1));
+        	writer.append(my_dict.get(nombreAleatoire)).append("\n");
         }
 		writer.close();
 		br.close();

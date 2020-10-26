@@ -5,7 +5,6 @@ import static java.nio.file.StandardOpenOption.READ;
 import java.nio.CharBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -31,10 +30,10 @@ public class wordcount_multiprocessing_callable implements Callable<HashMap<Stri
 		//open a MappedByteBuffer to read it
 	    MappedByteBuffer bb=in.map(FileChannel.MapMode.READ_ONLY,start,end-start);
 	    //create dict to store words and occurence
-	    HashMap<String, Integer> my_dict= new HashMap<String, Integer>();
+	    HashMap<String, Integer> my_dict= new HashMap<>();
 		  
 		   
-	    String line="";
+	    String line;
 	    int count=0;
         int pos=0;
         int start=0;
@@ -42,8 +41,9 @@ public class wordcount_multiprocessing_callable implements Callable<HashMap<Stri
         CharBuffer charBuffer;
         //here read and count 1000 row by 1000 row to not depass Charbuffer capacity
         while(bb.hasRemaining() && pos<end){
-            
-            while(bb.get(pos++)!='\n' && pos<end);
+
+			//noinspection StatementWithEmptyBody
+			while(bb.get(pos++)!='\n' && pos<end);
             count++;
             if (count>1000 || pos>=end-1 ){
             	
@@ -51,8 +51,7 @@ public class wordcount_multiprocessing_callable implements Callable<HashMap<Stri
 	            charBuffer = StandardCharsets.UTF_8.decode(bb);
 	     
 	            line=charBuffer.toString();
-	            charBuffer=null;
-	            bb.clear();
+				bb.clear();
 	            for (String sentence : line.split("\n")){
 	            	for(String word: sentence.split(" ")) {
 	            		
@@ -63,8 +62,7 @@ public class wordcount_multiprocessing_callable implements Callable<HashMap<Stri
 	            }
 	       
 	            start=pos;
-	            line = "";
-	            count=0;
+				count=0;
 	            
             }
             
